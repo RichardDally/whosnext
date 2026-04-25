@@ -248,7 +248,7 @@ jobs:
           git add pyproject.toml src/__version__.py
           git commit -m "Bump version to ${{ needs.bump-version.outputs.version_num }}"
           git tag "${{ needs.bump-version.outputs.version }}"
-          git push origin main --tags
+          git push origin HEAD --tags
 
   create-github-release:
     name: Create GitHub Release
