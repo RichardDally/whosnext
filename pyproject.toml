@@ -1,6 +1,6 @@
 [project]
 name = "whosnext"
-version = "0.1.0"
+version = "0.1.1"
 description = "Who is next to release a software?"
 readme = "README.md"
 requires-python = ">=3.14"
