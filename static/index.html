@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who's Next?</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-animated"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Who's Next?</div>
+            <ul class="nav-links">
+                <li><a href="#" data-page="next" class="active">Who's Next?</a></li>
+                <li><a href="#" data-page="create-release">Create Release</a></li>
+                <li><a href="#" data-page="history">Releases History</a></li>
+                <li><a href="#" data-page="participants">Participants</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Page: Who's Next -->
+        <section id="page-next" class="page active">
+            <header>
+                <h1>Who's Next?</h1>
+                <p>Round Robin Release Determination</p>
+            </header>
+            <div class="glass-card hero-card">
+                <h2>Next up for Release</h2>
+                <div class="next-person">
+                    <span id="next-name">Loading...</span>
+                </div>
+                <div class="next-stats" id="next-stats">
+                    <!-- Stats injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Page: Participants -->
+        <section id="page-participants" class="page">
+            <header>
+                <h1>Participants</h1>
+                <p>Manage the list of participants</p>
+            </header>
+            <div class="glass-card">
+                <h2>Add a new participant</h2>
+                <form id="form-participant" class="form-layout">
+                    <div class="input-group">
+                        <label for="part-first-name">First Name</label>
+                        <input type="text" id="part-first-name" required placeholder="First Name">
+                    </div>
+                    <div class="input-group">
+                        <label for="part-last-name">Last Name</label>
+                        <input type="text" id="part-last-name" required placeholder="Last Name">
+                    </div>
+                    <button type="submit" class="btn primary">Add Participant</button>
+                </form>
+            </div>
+            
+            <div class="glass-card list-card">
+                <h2>Current Participants</h2>
+                <div id="participants-list" class="list-container">
+                    <!-- Participants list here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Page: Create a Release -->
+        <section id="page-create-release" class="page">
+            <header>
+                <h1>Create a Release</h1>
+                <p>Record a new software release</p>
+            </header>
+            <div class="glass-card">
+                <form id="form-release" class="form-layout">
+                    <div class="input-group">
+                        <label for="rel-participant">Participant</label>
+                        <select id="rel-participant" required>
+                            <option value="">Select participant...</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="rel-date">Date</label>
+                        <input type="date" id="rel-date" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="rel-version">Software Version</label>
+                        <input type="text" id="rel-version" required placeholder="e.g. v1.0.0" pattern="v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)" title="Semantic version like 1.2.3 or v1.2.3 (no pre-release tags like .dev0)">
+                    </div>
+                    <button type="submit" class="btn primary">Record Release</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Page: Releases History -->
+        <section id="page-history" class="page">
+            <header>
+                <h1>Releases History</h1>
+                <p>History of all recorded releases</p>
+            </header>
+            <div class="glass-card">
+                <div class="table-container">
+                    <table id="table-history">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Version</th>
+                                <th>Participant</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                            <!-- History populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="toast-container" class="toast-container"></div>
+    <script src="/static/app.js"></script>
+</body>
+</html>
