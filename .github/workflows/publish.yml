@@ -17,6 +17,7 @@ on:
 
 env:
   DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/whosnext
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
   bump-version:
@@ -125,10 +126,10 @@ jobs:
         run: uv python install 3.14
 
       - name: Install dependencies
-        run: uv sync --all-extras
+        run: uv sync
 
       - name: Run tests
-        run: uv run --extra dev pytest -v
+        run: uv run pytest -v
 
       - name: Build package
         run: uv build
@@ -247,7 +248,7 @@ jobs:
           git add pyproject.toml src/__version__.py
           git commit -m "Bump version to ${{ needs.bump-version.outputs.version_num }}"
           git tag "${{ needs.bump-version.outputs.version }}"
-          git push origin main --tags
+          git push origin HEAD --tags
 
   create-github-release:
     name: Create GitHub Release
