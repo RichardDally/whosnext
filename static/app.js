@@ -50,7 +50,7 @@ async function loadNext() {
         
         document.getElementById('next-name').textContent = `${data.participant.first_name} ${data.participant.last_name}`;
         
-        const dateStr = data.last_release_date ? new Date(data.last_release_date).toLocaleDateString() : 'Never';
+        const dateStr = data.last_release_date ? new Date(data.last_release_date).toLocaleDateString('fr-FR') : 'Never';
         document.getElementById('next-stats').innerHTML = `
             <p>Release Count: <strong>${data.release_count}</strong></p>
             <p>Last Release: <strong>${dateStr}</strong></p>
@@ -150,7 +150,7 @@ async function loadHistory() {
             grouped[key].forEach(r => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${new Date(r.date).toLocaleDateString()}</td>
+                    <td>${new Date(r.date).toLocaleDateString('fr-FR')}</td>
                     <td>${r.version}</td>
                     <td>${r.participant.first_name} ${r.participant.last_name}</td>
                 `;
