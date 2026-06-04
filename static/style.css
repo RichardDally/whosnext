@@ -114,3 +114,25 @@ th { color: var(--text-secondary); }
 .toast { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--secondary-color); color: white; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: var(--glass-shadow); animation: slideIn 0.3s ease-out; }
 .toast.error { border-color: var(--danger-color); }
 @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+.btn.danger { background: var(--danger-color); }
+.btn.danger:hover { background: #dc2626; transform: translateY(-2px); }
+
+.modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 2000;
+    background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(6px);
+    justify-content: center; align-items: center;
+}
+.modal-overlay.active { display: flex !important; animation: fadeIn 0.2s ease-out; }
+.modal-card {
+    background: var(--glass-bg); backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border); border-radius: 16px;
+    padding: 2rem 2.5rem; box-shadow: var(--glass-shadow);
+    max-width: 440px; width: 90%; text-align: center;
+    animation: scaleIn 0.25s ease-out;
+}
+.modal-card h3 { font-size: 1.4rem; margin-bottom: 0.75rem; color: #fff; }
+.modal-card p { color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.5; }
+.modal-actions { display: flex; gap: 1rem; justify-content: center; }
+.modal-actions .btn { min-width: 100px; }
+@keyframes scaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }

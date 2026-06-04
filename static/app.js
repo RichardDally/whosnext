@@ -140,7 +140,7 @@ async function loadHistory() {
             
             const headerRow = document.createElement('tr');
             headerRow.style.cursor = 'pointer';
-            headerRow.innerHTML = `<td colspan="3" style="background: rgba(139,92,246,0.2); text-align: center; font-weight: 600; color: #fff; padding: 0.75rem; user-select: none;">
+            headerRow.innerHTML = `<td colspan="4" style="background: rgba(139,92,246,0.2); text-align: center; font-weight: 600; color: #fff; padding: 0.75rem; user-select: none;">
                 ${key} <span class="toggle-icon" style="font-size: 0.8em; opacity: 0.8; margin-left: 8px;">${isCurrent ? '▼' : '▶'}</span>
             </td>`;
             tbody.appendChild(headerRow);
@@ -149,11 +149,26 @@ async function loadHistory() {
             
             grouped[key].forEach(r => {
                 const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${new Date(r.date).toLocaleDateString('fr-FR')}</td>
-                    <td>${r.version}</td>
-                    <td>${r.participant.first_name} ${r.participant.last_name}</td>
-                `;
+
+                const tdDate = document.createElement('td');
+                tdDate.textContent = new Date(r.date).toLocaleDateString('fr-FR');
+
+                const tdVersion = document.createElement('td');
+                tdVersion.textContent = r.version;
+
+                const tdParticipant = document.createElement('td');
+                tdParticipant.textContent = `${r.participant.first_name} ${r.participant.last_name}`;
+
+                const tdActions = document.createElement('td');
+                const dropBtn = document.createElement('button');
+                dropBtn.className = 'btn danger';
+                dropBtn.style.cssText = 'padding: 0.25rem 0.6rem; font-size: 0.8rem;';
+                dropBtn.textContent = 'Drop';
+                dropBtn.addEventListener('click', () => confirmDeleteRelease(r.id, r.version));
+                tdActions.appendChild(dropBtn);
+
+                tr.append(tdDate, tdVersion, tdParticipant, tdActions);
+
                 tr.style.display = isCurrent ? '' : 'none';
                 tbody.appendChild(tr);
                 contentRows.push(tr);
@@ -282,3 +297,45 @@ async function handleAddRelease(e) {
         showToast(err.message, true);
     }
 }
+
+let pendingDeleteId = null;
+
+function confirmDeleteRelease(releaseId, version) {
+    pendingDeleteId = releaseId;
+    document.getElementById('confirm-modal-message').textContent = `Are you sure you want to drop release ${version}? This action cannot be undone.`;
+    const modal = document.getElementById('confirm-modal');
+    modal.hidden = false;
+    modal.classList.add('active');
+}
+
+function closeConfirmModal() {
+    const modal = document.getElementById('confirm-modal');
+    modal.classList.remove('active');
+    modal.hidden = true;
+    pendingDeleteId = null;
+}
+
+async function deleteRelease(releaseId) {
+    try {
+        const res = await fetch(`/api/releases/${releaseId}`, { method: 'DELETE' });
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.detail || 'Failed to delete release');
+        }
+        showToast('Release dropped successfully!');
+        loadHistory();
+    } catch (err) {
+        showToast(err.message, true);
+    }
+}
+
+document.getElementById('confirm-modal-cancel').addEventListener('click', closeConfirmModal);
+document.getElementById('confirm-modal-confirm').addEventListener('click', () => {
+    if (pendingDeleteId !== null) {
+        deleteRelease(pendingDeleteId);
+    }
+    closeConfirmModal();
+});
+document.getElementById('confirm-modal').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeConfirmModal();
+});

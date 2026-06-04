@@ -101,6 +101,15 @@ def create_release(release: schemas.ReleaseCreate, db: Session = Depends(databas
     db.refresh(db_release)
     return db_release
 
+@app.delete("/api/releases/{release_id}")
+def delete_release(release_id: int, db: Session = Depends(database.get_db)):
+    db_release = db.query(models.Release).filter(models.Release.id == release_id).first()
+    if not db_release:
+        raise HTTPException(status_code=404, detail="Release not found")
+    db.delete(db_release)
+    db.commit()
+    return {"detail": "Release deleted"}
+
 @app.get("/api/next", response_model=schemas.NextParticipantInfo)
 def get_next(db: Session = Depends(database.get_db)):
     active_participants = db.query(models.Participant).filter(models.Participant.active).all()
